@@ -1,6 +1,12 @@
 ## Getting Started
 
-## **Run the development server:**
+## Tip-Blink
+
+Tip Blink is an innovative app that empowers users to create personalized Blinks for accepting tips effortlessly, without any coding required. Currently, users can share their unique Blink links exclusively on Twitter, making tipping seamless and engaging within the platform.
+
+**Currently we are only on Devnet**
+
+## **Run the development server**:
 
 _Copy the below things and paste it in the .env file and make sure to get db url from the aiven and EDGE_STORE keys from the edgestore.dev and RPC Endpoint from any rpc provider (helius)_
 
