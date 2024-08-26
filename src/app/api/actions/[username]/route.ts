@@ -4,18 +4,20 @@ import {
   ActionPostResponse,
   ACTIONS_CORS_HEADERS,
   createPostResponse,
+  MEMO_PROGRAM_ID,
 } from "@solana/actions";
 import prisma from "../../../../../prisma";
 import {
-  clusterApiUrl,
   Connection,
   LAMPORTS_PER_SOL,
   PublicKey,
   SystemProgram,
   Transaction,
+  Keypair,
+  TransactionInstruction,
 } from "@solana/web3.js";
 
-export const GET = async (req: Request, { params }: any) => {
+export const GET = async (req: Request, { params }: { params: Params }) => {
   try {
     const username = params.username;
 
@@ -35,11 +37,39 @@ export const GET = async (req: Request, { params }: any) => {
         }
       );
     }
+    if (!user.blinkCreated) {
+      return Response.json(
+        {
+          msg: "User didnt made any blink",
+        },
+        {
+          headers: ACTIONS_CORS_HEADERS,
+        }
+      );
+    }
+
+    const blink = await prisma.userBlink.findUnique({
+      where: {
+        userWallet: user.wallet,
+      },
+    });
+
+    if (!blink) {
+      return Response.json(
+        {
+          msg: "User didnt made any blink",
+        },
+        {
+          headers: ACTIONS_CORS_HEADERS,
+        }
+      );
+    }
+
     const payload: ActionGetResponse = {
-      icon: user.imageURL,
-      title: "Transfer SOL",
-      label: "Send me something",
-      description: "Just send me some SOL for living",
+      icon: blink.icon,
+      title: blink.title,
+      label: blink.label,
+      description: blink.description,
       links: {
         actions: [
           {
@@ -84,7 +114,11 @@ export const GET = async (req: Request, { params }: any) => {
 
 export const OPTIONS = GET;
 
-export const POST = async (req: Request, { params }: any) => {
+interface Params {
+  username: string;
+}
+
+export const POST = async (req: Request, { params }: { params: Params }) => {
   try {
     const url = new URL(req.url);
 
@@ -112,7 +146,7 @@ export const POST = async (req: Request, { params }: any) => {
         username,
       },
     });
-    console.log("user is", user);
+
     if (!user) {
       return Response.json(
         {
@@ -123,18 +157,40 @@ export const POST = async (req: Request, { params }: any) => {
         }
       );
     }
+    const referenceKey = Keypair.generate();
+
+    await prisma.userReceivedSolTransactions.create({
+      data: {
+        amount,
+        referenceKey: referenceKey.publicKey.toString(),
+        wallet: account.toString(),
+        transactionId: "",
+        userWallet: user.wallet,
+      },
+    });
     const end_point = process.env.RPC_END_POINT as string;
     const connection = new Connection(end_point, "confirmed");
 
     const transaction = new Transaction();
 
     transaction.add(
+      new TransactionInstruction({
+        keys: [],
+        data: Buffer.from(`${account.toString()} dontaing to ${user.username}`),
+        programId: new PublicKey(MEMO_PROGRAM_ID),
+      }),
       SystemProgram.transfer({
         fromPubkey: account,
         toPubkey: new PublicKey(user.wallet),
         lamports: amount * LAMPORTS_PER_SOL,
       })
     );
+
+    transaction.instructions[1].keys.push({
+      isSigner: false,
+      isWritable: false,
+      pubkey: referenceKey.publicKey,
+    });
 
     transaction.feePayer = account;
     transaction.recentBlockhash = (

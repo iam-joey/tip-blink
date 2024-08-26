@@ -4,14 +4,15 @@ import prisma from "../../../../prisma";
 export const POST = async (req: Request) => {
   try {
     let a = await req.json();
-    const data: UserSchemaType = await userSchema.parse(a);
+
+    const data = await userSchema.parse(a);
     const newUser = await prisma.user.create({
       data: {
-        username: data.username,
+        username: data.twitterUsername,
         wallet: data.walletAddress,
-        imageURL: data.imageUrl,
       },
     });
+    console.log(newUser);
     return Response.json({
       msg: "user created successfully",
       username: newUser.username,
@@ -23,5 +24,3 @@ export const POST = async (req: Request) => {
     });
   }
 };
-
-// export const POST = () => {};
