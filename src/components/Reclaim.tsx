@@ -9,6 +9,7 @@ import { useRouter } from "next/navigation";
 import { UserSchemaType } from "@/utils/validation";
 import { createUser } from "@/lib/actions";
 import { useWallet } from "@solana/wallet-adapter-react";
+import { WalletMultiButtonFix } from "./navbar/Navbar";
 
 function ReclaimComponent({ address }: { address: string }) {
   const APP_ID = process.env.NEXT_PUBLIC_RECLAIM_APP_ID as string;
@@ -75,7 +76,7 @@ function ReclaimComponent({ address }: { address: string }) {
     <>
       {publicKey && (
         <>
-          <div className=" flex flex-col gap-2 items-center p-3 justify-center w-full h-full">
+          <div className=" flex flex-col gap-2 items-center p-3 justify-center w-full h-[700px]">
             <h1 className="uppercase text-2xl font-mono font-semibold">
               Verify your twitter using zkProof
             </h1>
@@ -93,6 +94,9 @@ function ReclaimComponent({ address }: { address: string }) {
                 </Button>
               </div>
             )}
+            <div className="w-full flex items-center justify-center p-5">
+              <WalletMultiButtonFix />
+            </div>
           </div>
         </>
       )}

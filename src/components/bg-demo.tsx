@@ -14,8 +14,12 @@ export function HomepageRender() {
             Devnet
           </Button>
         </div>
-        <h1 className="text-4xl md:text-4xl lg:text-6xl font-semibold max-w-7xl mx-auto text-center mt-6 relative z-20 py-6   text-slate-300 ">
-          Build Tipping blinks <br /> at <Cover>warp speed</Cover>
+        <h1 className="text-4xl md:text-4xl lg:text-5xl font-semibold max-w-7xl mx-auto text-center mt-6 relative z-20 py-6   text-slate-300 ">
+          Build{" "}
+          <span className="text-blue-400 font-serif font-bold uppercase text-4xl">
+            blink
+          </span>{" "}
+          to receive tips <br /> at <Cover>warp speed</Cover>
         </h1>
         <p></p>
         <p className="text-neutral-500 max-w-lg mx-auto my-2 text-md text-center relative z-10">

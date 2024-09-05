@@ -110,7 +110,7 @@ export const createUser = async (userData: UserSchemaType) => {
         ],
       },
     });
-
+    console.log("here came");
     if (existingUser) {
       return {
         msg: "Username or wallet address is already associated with another account.",

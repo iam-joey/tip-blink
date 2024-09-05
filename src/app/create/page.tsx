@@ -1,6 +1,5 @@
 "use client";
 
-import Navbar from "@/components/navbar/Navbar";
 import ReclaimComponent from "@/components/Reclaim";
 import { useWallet } from "@solana/wallet-adapter-react";
 import { useRouter } from "next/navigation";
@@ -16,7 +15,6 @@ function Page() {
   }, [connected, publicKey]);
   return (
     <>
-      {/* <Navbar /> */}
       <div className="w-full h-screen">
         {publicKey && <ReclaimComponent address={publicKey.toString()} />}
       </div>
