@@ -1,5 +1,4 @@
 "use client";
-
 import { useEdgeStore } from "@/contextproviders/edgestore";
 import { useState } from "react";
 import { SingleImageDropzone } from "./ui/ImageUpload";
@@ -19,8 +18,10 @@ import { Textarea } from "@/components/ui/textarea";
 import { blinkSchema, BlinkSchema } from "@/utils/validation";
 import axios from "axios";
 import { z, ZodError } from "zod";
+import { createBlink } from "@/lib/actions";
+import { useRouter } from "next/navigation";
 
-export function CreateBlinkPage({ address }: { address?: string }) {
+export function CreateBlinkPage({ address }: { address: string }) {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [label, setLabel] = useState("");
@@ -30,31 +31,38 @@ export function CreateBlinkPage({ address }: { address?: string }) {
   const [url, setUrl] = useState("");
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-
     try {
-      console.log("Submitted:", { title, description, url });
-      if (!address) return;
       if (!url) {
         toast.warning("please upload image");
+        return;
+      }
+
+      if (title.trim().length < 6) {
+        toast.warning("Title must be at least 5 characters long.");
+        return;
+      }
+
+      if (description.trim().length < 15) {
+        toast.warning("Description must be at least 15 characters long.");
         return;
       }
 
       const fromData: BlinkSchema = {
         description,
         imageUrl: url,
-        label,
+        label: title,
         title,
         walletAddress: address,
       };
       let blinkData = await blinkSchema.parse(fromData);
       console.log(blinkData);
-      toast.info("creating your blink");
-      const res = await axios.post(
-        "http://localhost:3000/api/blink/create",
-        blinkData
-      );
-      console.log(res.data);
-      toast.success(`${res.data.msg}`);
+      const loadingToastId = toast.loading("Creating blink....");
+      const res = await createBlink(fromData);
+      if (res.err) {
+        toast.warning(`${res.msg}`, { id: loadingToastId });
+        return;
+      }
+      toast.success(`${res.msg}`, { id: loadingToastId });
     } catch (error) {
       if (error instanceof ZodError) {
         console.log("inside");
@@ -93,7 +101,7 @@ export function CreateBlinkPage({ address }: { address?: string }) {
                 required
               />
             </div>
-            <div className="space-y-2">
+            {/* <div className="space-y-2">
               <Label
                 htmlFor="label"
                 className="text-sm font-bold text-gray-700 dark:text-gray-300"
@@ -108,7 +116,7 @@ export function CreateBlinkPage({ address }: { address?: string }) {
                 className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white"
                 required
               />
-            </div>
+            </div> */}
             <div className="space-y-2">
               <Label
                 htmlFor="description"

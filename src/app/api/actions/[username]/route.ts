@@ -1,4 +1,5 @@
 import {
+  ActionError,
   ActionGetResponse,
   ActionPostRequest,
   ActionPostResponse,
@@ -146,33 +147,23 @@ export const POST = async (req: Request, { params }: { params: Params }) => {
         username,
       },
     });
-
+    console.log(user);
     if (!user) {
       return Response.json(
         {
-          msg: "User not found",
-        },
+          message: "User not found",
+        } as ActionError,
         {
           headers: ACTIONS_CORS_HEADERS,
         }
       );
     }
-    const referenceKey = Keypair.generate();
 
-    await prisma.userReceivedSolTransactions.create({
-      data: {
-        amount,
-        referenceKey: referenceKey.publicKey.toString(),
-        wallet: account.toString(),
-        transactionId: "",
-        userWallet: user.wallet,
-      },
-    });
-    const end_point = process.env.RPC_END_POINT as string;
+    const end_point = process.env.NEXT_PUBLIC_RPC_END_POINT as string;
     const connection = new Connection(end_point, "confirmed");
 
     const transaction = new Transaction();
-
+    const keypair = Keypair.generate();
     transaction.add(
       new TransactionInstruction({
         keys: [],
@@ -187,9 +178,9 @@ export const POST = async (req: Request, { params }: { params: Params }) => {
     );
 
     transaction.instructions[1].keys.push({
+      pubkey: keypair.publicKey,
       isSigner: false,
       isWritable: false,
-      pubkey: referenceKey.publicKey,
     });
 
     transaction.feePayer = account;
@@ -197,15 +188,39 @@ export const POST = async (req: Request, { params }: { params: Params }) => {
       await connection.getLatestBlockhash()
     ).blockhash;
 
+    const data = await prisma.payments.create({
+      data: {
+        amount: (amount * LAMPORTS_PER_SOL).toString(),
+        referenceKey: keypair.publicKey.toString(),
+        senderAddress: body.account,
+        userId: user.wallet,
+        status: "PENDING",
+      },
+    });
     const payload: ActionPostResponse = await createPostResponse({
       fields: {
         transaction,
-        message: "Thanks for the donation",
+        links: {
+          next: {
+            type: "post",
+            href: `/api/actions/${body.account}/sendsol/${data.id}`,
+          },
+        },
       },
     });
 
     return Response.json(payload, {
       headers: ACTIONS_CORS_HEADERS,
     });
-  } catch (error) {}
+  } catch (error) {
+    console.log(error);
+    return Response.json(
+      {
+        message: "errro in endpoint",
+      } as ActionError,
+      {
+        headers: ACTIONS_CORS_HEADERS,
+      }
+    );
+  }
 };

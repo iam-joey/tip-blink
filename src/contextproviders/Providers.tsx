@@ -6,13 +6,7 @@ import { Toaster } from "sonner";
 import { ThemeProvider } from "./theme-provider";
 import { QueryClientProvider, QueryClient } from "@tanstack/react-query";
 
-const queryClient = new QueryClient({
-  defaultOptions: {
-    queries: {
-      staleTime: 1000 * 60,
-    },
-  },
-});
+const queryClient = new QueryClient({});
 
 export const Providers = ({ children }: { children: ReactNode }) => {
   return (
@@ -20,7 +14,7 @@ export const Providers = ({ children }: { children: ReactNode }) => {
       <Toaster position="top-center" richColors closeButton />
       <ThemeProvider
         attribute="class"
-        defaultTheme="system"
+        defaultTheme="light"
         enableSystem
         disableTransitionOnChange
       >

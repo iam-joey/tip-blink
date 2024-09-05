@@ -20,51 +20,26 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import { useGetLatestTransactions } from "@/hooks/useGetLatestPayments";
+import Loading from "../Loading";
+import { LAMPORTS_PER_SOL } from "@solana/web3.js";
 
-export default function TransactionsHistoryView() {
+export default function TransactionsHistoryView({
+  address,
+}: {
+  address: string;
+}) {
   interface dataState {
-    address: string;
+    senderAddress: string;
     amount: string;
   }
-  const data: dataState[] = [
-    {
-      address: "joey@gmail",
-      amount: "432",
-    },
-    {
-      address: "joey@gmail",
-      amount: "432",
-    },
 
-    {
-      address: "joey@gmail",
-      amount: "432",
-    },
-    {
-      address: "joey@gmail",
-      amount: "432",
-    },
-    {
-      address: "joey@gmail",
-      amount: "432",
-    },
-    {
-      address: "joey@gmail",
-      amount: "432",
-    },
-    {
-      address: "joey@gmail",
-      amount: "432",
-    },
-    {
-      address: "joey@gmail",
-      amount: "432",
-    },
-    {
-      address: "joey@gmail",
-      amount: "432",
-    },
-  ];
+  const { data: paymentsData, isLoading } = useGetLatestTransactions(address);
+
+  if (isLoading) {
+    return <Loading />;
+  }
+
   return (
     <Card className="xl:col-span-2">
       <CardHeader className="flex flex-row items-center">
@@ -75,7 +50,7 @@ export default function TransactionsHistoryView() {
           </CardDescription>
         </div>
         <Button asChild size="sm" className="ml-auto gap-1">
-          <Link href="#">
+          <Link href="/transactions">
             View All
             <ArrowUpRight className="h-4 w-4" />
           </Link>
@@ -90,9 +65,17 @@ export default function TransactionsHistoryView() {
             </TableRow>
           </TableHeader>
           <TableBody>
-            {data.map(({ amount, address }) => (
-              <TableCellView address={address} amount={amount} />
-            ))}
+            {paymentsData && paymentsData.data && (
+              <>
+                {paymentsData.data.map(({ amount, senderAddress }, index) => (
+                  <TableCellView
+                    key={index}
+                    address={senderAddress}
+                    amount={amount}
+                  />
+                ))}
+              </>
+            )}
           </TableBody>
         </Table>
       </CardContent>
@@ -114,7 +97,7 @@ function TableCellView({
           <div className="font-medium">{address}</div>
         </TableCell>
         <TableCell className="text-right">
-          ${parseFloat(amount).toFixed(2).toString()}
+          ${(parseFloat(amount) / LAMPORTS_PER_SOL).toFixed(2)} SOL
         </TableCell>
       </TableRow>
     </>

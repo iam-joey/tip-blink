@@ -5,7 +5,7 @@ import { useWallet } from "@solana/wallet-adapter-react";
 import { useRouter } from "next/navigation";
 import React, { useEffect } from "react";
 
-function page() {
+function Blink() {
   const { connected, publicKey } = useWallet();
   const router = useRouter();
   useEffect(() => {
@@ -21,4 +21,4 @@ function page() {
   );
 }
 
-export default page;
+export default Blink;

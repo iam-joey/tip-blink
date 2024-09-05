@@ -15,28 +15,11 @@ model User {
   createdAt     DateTime                      @default(now())
   updatedAt     DateTime                      @updatedAt
 
-  payments      UserReceivedSolTransactions[]
   blink         UserBlink?
+  payments        Payments[]
 
   @@index([username], name: "username_user")
   @@index([wallet], name: "wallet_user")
-}
-
-model UserReceivedSolTransactions {
-  id           String   @id @default(uuid())
-  amount       Float
-  wallet       String
-  referenceKey String
-  transactionId String?
-  status       Status   @default(PENDING)
-  createdAt    DateTime @default(now())
-  updatedAt    DateTime @updatedAt
-
-  userWallet   String
-  user         User     @relation(fields: [userWallet], references: [wallet])
-
-  @@index([wallet], name: "wallet_address_sender")
-  @@index([referenceKey], name: "reference_key_transaction")
 }
 
 model UserBlink {
@@ -53,6 +36,22 @@ model UserBlink {
 
   @@index([userWallet],name:"user_wallet_address")
 }
+
+
+model Payments{
+  id    String @id @default(uuid())
+  senderAddress   String
+  amount          String   //in lamports
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+  userId   String
+  user    User @relation(fields: [userId],references: [wallet])
+status      Status
+  referenceKey  String
+
+  @@index([userId])  
+}
+
 
 enum Status {
   PENDING

@@ -8,10 +8,7 @@ import {
 import { WalletModalProvider } from "@solana/wallet-adapter-react-ui";
 import "@solana/wallet-adapter-react-ui/styles.css";
 import { useMemo } from "react";
-import {
-  PhantomWalletAdapter,
-  SolflareWalletAdapter,
-} from "@solana/wallet-adapter-wallets";
+
 import { clusterApiUrl } from "@solana/web3.js";
 
 export function WalletProviders({ children }: { children: React.ReactNode }) {

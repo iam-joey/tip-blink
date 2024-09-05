@@ -1,10 +1,11 @@
 "use client";
 import Navbar from "@/components/navbar/Navbar";
+import Transactions from "@/components/transactions/Transactions";
 import { useWallet } from "@solana/wallet-adapter-react";
 import { useRouter } from "next/navigation";
 import React, { useEffect } from "react";
 
-function page() {
+function Page() {
   const { connected, publicKey } = useWallet();
   const router = useRouter();
   useEffect(() => {
@@ -15,9 +16,9 @@ function page() {
   return (
     <>
       <Navbar />
-      <div>Transactions page</div>
+      {publicKey && <Transactions address={publicKey.toString()} />}
     </>
   );
 }
 
-export default page;
+export default Page;

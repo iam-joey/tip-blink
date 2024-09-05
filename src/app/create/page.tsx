@@ -16,9 +16,9 @@ function Page() {
   }, [connected, publicKey]);
   return (
     <>
-      <Navbar />
-      <div className="mt-3 ">
-        <ReclaimComponent />
+      {/* <Navbar /> */}
+      <div className="w-full h-screen">
+        {publicKey && <ReclaimComponent address={publicKey.toString()} />}
       </div>
     </>
   );

@@ -5,27 +5,36 @@ import { useRouter } from "next/navigation";
 import { useEffect } from "react";
 import { useTheme } from "next-themes";
 import { useGetUserDetails } from "@/hooks/useGetPublicKey";
+import { getUser } from "@/lib/actions";
 
 export default function Home() {
   const { connected, publicKey } = useWallet();
   const router = useRouter();
-  const { setTheme } = useTheme();
 
-  const { data, isLoading } = useGetUserDetails(publicKey?.toString());
-
-  useEffect(() => {
-    setTheme("");
-  }, [setTheme]);
+  const fetchUser = async (address: string) => {
+    const data = await getUser(address);
+    return data.data;
+  };
 
   useEffect(() => {
-    if (!isLoading && connected && publicKey) {
-      if (data?.exists) {
-        router.push("/dashboard");
-      } else {
-        router.push("/create");
+    const checkUser = async () => {
+      if (publicKey && connected) {
+        try {
+          const value = await fetchUser(publicKey.toString());
+          console.log("inside useEffect", value);
+          if (!value) {
+            router.push("/create");
+          } else {
+            router.push("/dashboard");
+          }
+        } catch (error) {
+          console.error("Error fetching user:", error);
+        }
       }
-    }
-  }, [isLoading, connected, publicKey, data, router]);
+    };
+
+    checkUser();
+  }, [connected, publicKey, router]);
 
   return <Homepage />;
 }

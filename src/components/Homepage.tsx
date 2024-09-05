@@ -1,13 +1,9 @@
 "use client";
 import React from "react";
-import { BackgroundBeamsDemo } from "./bg-demo";
+import { HomepageRender } from "./bg-demo";
 
 function Homepage() {
-  return (
-    <div className="">
-      <BackgroundBeamsDemo />
-    </div>
-  );
+  return <HomepageRender />;
 }
 
 export default Homepage;

@@ -1,7 +1,7 @@
 import React from "react";
-import { CreateBlinkPage } from "../UploadImageDemo";
+import { CreateBlinkPage } from "../CreateBlinkPage";
 
-function CreateBlink({ address }: { address?: string }) {
+function CreateBlink({ address }: { address: string }) {
   return (
     <div className="w-full p-4">
       <CreateBlinkPage address={address} />

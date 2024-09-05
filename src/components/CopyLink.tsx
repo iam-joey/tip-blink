@@ -16,7 +16,7 @@ function CopyLink({ text }: { text: string }) {
     }
   };
   return (
-    <div className="rounded-md p-2 h-10 bg-slate-700 flex gap-2">
+    <div className="rounded-md p-2 h-10 bg-slate-100 flex gap-2">
       {text}
       {<CopySvg copyLink={copyLink} />}
     </div>

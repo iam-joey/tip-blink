@@ -17,14 +17,14 @@ export const WalletMultiButtonFix = dynamic(
 function Navbar() {
   const router = useRouter();
   return (
-    <header className=" p-3 flex items-center justify-between border border-b-green-700">
+    <header className="p-3 flex items-center justify-between  border-blue-300">
       <span
-        className="text-2xl uppercase font-semibold cursor-pointer"
+        className="text-2xl  font-semibold cursor-pointer"
         onClick={() => {
           router.push("/dashboard");
         }}
       >
-        Tip-Blink
+        TipBlink
       </span>
       <div className="flex p-2 gap-4 items-center">
         <WalletMultiButtonFix />
