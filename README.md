@@ -2,9 +2,11 @@
 
 ## Tip-Blink
 
-Tip Blink is an innovative app that empowers users to create personalized Blinks for accepting tips effortlessly, without any coding required. Currently, users can share their unique Blink links exclusively on Twitter, making tipping seamless and engaging within the platform.
+Tip Blink is an app that allows users to effortlessly create personalized profiles for accepting tips, without any coding required. Users can create accounts based on Twitter usernames, leveraging the Reclaim protocol with zkTLS technology. This ensures that we can effectively filter out users attempting to impersonate famous Twitter handles as their Blink profiles
 
 **Currently we are only on Devnet**
+
+![alt text](image.png)
 
 ## **Run the development server**:
 
