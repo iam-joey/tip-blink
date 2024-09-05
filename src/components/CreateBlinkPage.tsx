@@ -29,6 +29,7 @@ export function CreateBlinkPage({ address }: { address: string }) {
   const { edgestore } = useEdgeStore();
   const [progress, setProgress] = useState(0);
   const [url, setUrl] = useState("");
+  const router = useRouter();
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     try {
@@ -63,6 +64,7 @@ export function CreateBlinkPage({ address }: { address: string }) {
         return;
       }
       toast.success(`${res.msg}`, { id: loadingToastId });
+      router.push("/dashboard");
     } catch (error) {
       if (error instanceof ZodError) {
         console.log("inside");
