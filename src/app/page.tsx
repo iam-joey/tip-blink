@@ -3,8 +3,6 @@ import Homepage from "@/components/Homepage";
 import { useWallet } from "@solana/wallet-adapter-react";
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
-import { useTheme } from "next-themes";
-import { useGetUserDetails } from "@/hooks/useGetPublicKey";
 import { getUser } from "@/lib/actions";
 
 export default function Home() {

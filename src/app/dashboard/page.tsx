@@ -3,9 +3,8 @@ import CreateBlink from "@/components/dashboard/CreateBlink";
 import Dashboard from "@/components/dashboard/Dashboard";
 import Loading from "@/components/Loading";
 import Navbar from "@/components/navbar/Navbar";
-import { useGetUserDetails } from "@/hooks/useGetPublicKey";
+import { useGetUserBlink } from "@/hooks/useGetUserBlink";
 import { useWallet } from "@solana/wallet-adapter-react";
-
 import { useRouter } from "next/navigation";
 import React, { useEffect } from "react";
 
@@ -17,7 +16,7 @@ function Page() {
     if (!connected && !publicKey) {
       router.push("/");
     }
-  }, [connected, publicKey]);
+  }, [connected, publicKey, router]);
 
   return (
     <>
@@ -30,14 +29,15 @@ function Page() {
 export default Page;
 
 function HomePageRender({ address }: { address: string }) {
-  const { data, isLoading } = useGetUserDetails(address);
-
+  const { data, isLoading } = useGetUserBlink(address);
+  const router = useRouter();
   if (isLoading) {
     return <Loading />;
   }
 
-  if (!data?.data?.blinkCreated) {
-    return <CreateBlink address={address} />;
+  if (!data?.blinkCreated) {
+    router.push("/createblink");
+    return;
   }
 
   return (

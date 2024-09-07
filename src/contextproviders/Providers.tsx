@@ -6,7 +6,7 @@ import { Toaster } from "sonner";
 import { ThemeProvider } from "./theme-provider";
 import { QueryClientProvider, QueryClient } from "@tanstack/react-query";
 
-const queryClient = new QueryClient({});
+const queryClient = new QueryClient();
 
 export const Providers = ({ children }: { children: ReactNode }) => {
   return (

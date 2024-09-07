@@ -12,7 +12,7 @@ function Blink() {
     if (!connected && !publicKey) {
       router.push("/");
     }
-  }, [connected, publicKey]);
+  }, [connected, publicKey, router]);
   return (
     <>
       <Navbar />

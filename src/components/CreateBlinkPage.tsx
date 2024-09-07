@@ -1,6 +1,6 @@
 "use client";
 import { useEdgeStore } from "@/contextproviders/edgestore";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { SingleImageDropzone } from "./ui/ImageUpload";
 import { Button } from "./ui/button";
 import { Progress } from "./ui/progress";
@@ -16,7 +16,6 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { blinkSchema, BlinkSchema } from "@/utils/validation";
-import axios from "axios";
 import { z, ZodError } from "zod";
 import { createBlink } from "@/lib/actions";
 import { useRouter } from "next/navigation";
@@ -30,6 +29,7 @@ export function CreateBlinkPage({ address }: { address: string }) {
   const [progress, setProgress] = useState(0);
   const [url, setUrl] = useState("");
   const router = useRouter();
+
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     try {
@@ -56,15 +56,15 @@ export function CreateBlinkPage({ address }: { address: string }) {
         walletAddress: address,
       };
       let blinkData = await blinkSchema.parse(fromData);
-      console.log(blinkData);
       const loadingToastId = toast.loading("Creating blink....");
       const res = await createBlink(fromData);
+      console.log(res);
       if (res.err) {
         toast.warning(`${res.msg}`, { id: loadingToastId });
         return;
       }
       toast.success(`${res.msg}`, { id: loadingToastId });
-      router.push("/dashboard");
+      router.push("/blink");
     } catch (error) {
       if (error instanceof ZodError) {
         console.log("inside");

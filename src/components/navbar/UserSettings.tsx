@@ -29,7 +29,6 @@ export function UserSetting() {
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent className="mt-2 w-56" align="end" forceMount>
-        <DropdownMenuSeparator />
         <DropdownMenuGroup>
           <DropdownMenuItem
             className="cursor-pointer"

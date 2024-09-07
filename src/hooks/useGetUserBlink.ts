@@ -1,12 +1,22 @@
-import { getUser } from "@/lib/actions";
+import { BASE_URL } from "@/lib/utils";
 import { useQuery } from "@tanstack/react-query";
-import axios from "axios";
 
 export const useGetUserBlink = (publickey: string) => {
   return useQuery({
     queryKey: ["user_blink", publickey],
     queryFn: async () => {
-      const data = await getUser(publickey);
+      const response = await fetch(
+        `${BASE_URL}/api/getuser?address=${publickey}`,
+        {
+          cache: "no-store",
+        }
+      );
+
+      if (!response.ok) {
+        throw new Error(`Error fetching user data: ${response.statusText}`);
+      }
+      // Parse the response as JSON
+      const data = await response.json();
       return data;
     },
     enabled: !!publickey,

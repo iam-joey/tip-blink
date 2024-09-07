@@ -11,11 +11,11 @@ export default function BlinkPage({ publicKey }: { publicKey: string }) {
 
   return (
     <div className=" p-3 flex justify-center items-center ">
-      {data && data.data?.blink && (
+      {data && data.blink && (
         <BlinkRender
-          title={data.data.blink.title}
-          description={data.data.blink.description}
-          imageUrl={data.data.blink.icon}
+          title={data.blink.title}
+          description={data.blink.description}
+          imageUrl={data.blink.icon}
           address={publicKey}
         />
       )}

@@ -21,7 +21,7 @@ function ReclaimComponent({ address }: { address: string }) {
     if (!publicKey) {
       router.push("/");
     }
-  }, [publicKey, connected]);
+  }, [publicKey, connected, router]);
 
   async function generateVerificationRequest() {
     const providerIds = ["39c31ffd-0be0-4e45-9a18-1eb3cb8099d4"];

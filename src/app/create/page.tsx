@@ -12,7 +12,7 @@ function Page() {
     if (!connected && !publicKey) {
       router.push("/");
     }
-  }, [connected, publicKey]);
+  }, [connected, publicKey, router]);
   return (
     <>
       <div className="w-full h-screen">

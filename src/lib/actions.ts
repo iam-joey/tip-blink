@@ -3,6 +3,7 @@
 import { BlinkSchema, UserSchemaType } from "@/utils/validation";
 import prisma from "../../prisma";
 import { LAMPORTS_PER_SOL } from "@solana/web3.js";
+import { revalidatePath } from "next/cache";
 
 export const getUser = async (address: string) => {
   try {
@@ -44,7 +45,6 @@ export interface Blink {
 
 export const createBlink = async (data: BlinkSchema) => {
   try {
-    await new Promise((r) => setTimeout(r, 2000));
     const blinkData = await prisma.userBlink.create({
       data: {
         icon: data.imageUrl,
@@ -63,7 +63,7 @@ export const createBlink = async (data: BlinkSchema) => {
         blinkCreated: true,
       },
     });
-
+    revalidatePath("/dashboard");
     return {
       msg: "Updated successFully",
       err: false,

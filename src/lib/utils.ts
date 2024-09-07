@@ -14,3 +14,6 @@ export const getConnection = () => {
 
   return connection;
 };
+
+export const BASE_URL =
+  process.env.NEXT_PUBLIC_PROD_URL || "http://localhost:3000";
