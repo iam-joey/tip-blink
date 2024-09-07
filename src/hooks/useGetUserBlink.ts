@@ -5,6 +5,7 @@ export const useGetUserBlink = (publickey: string) => {
   return useQuery({
     queryKey: ["user_blink", publickey],
     queryFn: async () => {
+      console.log(BASE_URL);
       const response = await fetch(
         `${BASE_URL}/api/getuser?address=${publickey}`,
         {
