@@ -4,6 +4,7 @@ import { useWallet } from "@solana/wallet-adapter-react";
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
 import { getUser } from "@/lib/actions";
+import { Metadata } from "next";
 
 export default function Home() {
   const { connected, publicKey } = useWallet();

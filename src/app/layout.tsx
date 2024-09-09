@@ -15,6 +15,9 @@ export const metadata: Metadata = {
     images:
       "https://raw.githubusercontent.com/iam-joey/tip-blink/main/image.png",
   },
+  other: {
+    "dscvr:canvas:version": "vNext",
+  },
 };
 
 export default function RootLayout({

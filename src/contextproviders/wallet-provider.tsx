@@ -8,14 +8,16 @@ import {
 import { WalletModalProvider } from "@solana/wallet-adapter-react-ui";
 import "@solana/wallet-adapter-react-ui/styles.css";
 import { useMemo } from "react";
-
+// import {} from "@solana/wallet-adapter-wallets"
 import { clusterApiUrl } from "@solana/web3.js";
 
 export function WalletProviders({ children }: { children: React.ReactNode }) {
   const network = WalletAdapterNetwork.Devnet;
   const endpoint = useMemo(() => clusterApiUrl(network), [network]);
   const wallets = useMemo(
-    () => [],
+    () => [
+      
+    ],
     // eslint-disable-next-line react-hooks/exhaustive-deps
     [network]
   );
