@@ -3,21 +3,19 @@ const nextConfig = {
   images: {
     domains: ["files.edgestore.dev", "raw.githubusercontent.com"],
   },
-  output: "standalone",
-  reactStrictMode: true,
-  webpack: (config, { dev }) => {
-    if (dev) {
-      Object.defineProperty(config, "devtool", {
-        get() {
-          return "cheap-source-map";
-        },
-        set() {},
-      });
-    }
-    return config;
-  },
-  compiler: {
-    removeConsole: false,
+  async headers() {
+    return [
+      {
+        source: "/(.*)",
+        headers: [
+          {
+            key: "Content-Security-Policy",
+            value:
+              "connect-src 'self' https://api.dscvr.one https://api1.stg.dscvr.one https://*.helius-rpc.com https://*.solana.com/ https://*.helius-rpc.com https://files.edgestore.dev/*; script-src 'self' 'wasm-unsafe-eval' 'unsafe-inline' 'unsafe-eval'",
+          },
+        ],
+      },
+    ];
   },
 };
 
